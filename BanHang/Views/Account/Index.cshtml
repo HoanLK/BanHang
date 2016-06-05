@@ -1,0 +1,54 @@
+﻿@model IEnumerable<BanHang.Models.User>
+
+@{
+    ViewBag.Title = "Danh sách Người dùng";
+}
+
+<p>
+    <a href="@Url.Action("Register", "Account")" class="btn ink-reaction btn-raised btn-primary"><span class="fa fa-plus"></span> Thêm</a>
+</p>
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="datatable1">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>User name</th>
+                        <th>Tên</th>
+                        <th>Quyền</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{int stt = 0;}
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @{ stt++;}
+                                @stt
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Username)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                @{
+                                    var role = Roles.GetRolesForUser(item.Username);
+                                }
+                                @role[0]
+                            </td>
+                            <td>
+                                @*<a data-toggle="tooltip" data-placement="top" title="Sửa thông tin" href="@Url.Action("Edit", new { id = item.UserId })" class="btn btn-xs btn-social-icon btn-dropbox"><i class="fa fa-fw fa-edit"></i></a>*@
+                                <a data-toggle="tooltip" data-placement="top" title="Xóa" href="@Url.Action("Delete", new { id = item.UserId })" class="btn btn-xs btn-social-icon btn-google"><i class="fa fa-trash-o"></i></a>
+                            </td>
+                        </tr>
+                }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>

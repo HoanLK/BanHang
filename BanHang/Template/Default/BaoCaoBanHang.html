@@ -1,0 +1,37 @@
+﻿<!--Export-->
+<script src="https://rawgithub.com/eligrey/FileSaver.js/master/FileSaver.js" type="text/javascript"></script>
+<div ng-controller="baocaoBanHangController">
+    <div class="col-md-12">
+        <span us-spinner="{radius:15, width:4, length: 8}"></span>
+        <ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase"><b>Báo cáo hán hàng</b></div>
+                    <div pull-right><a class="btn btn-warning" data-toggle="modal" data-target="#themHangHoa" data-backdrop="static" data-keyboard="false" title="Thêm hàng hóa" ng-click="ThemHangHoa()"><span class="fa fa-plus"></span></a></div>
+                </div>
+            </li>
+        </ul>
+        <div class="card">
+            <div class="container-fluid">
+                <form class="form" role="form">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="date" class="form-control" name="tuNgay" ng-model="tuNgay" ng-change="Loc()" />
+                            <label for="tuNgay">Từ ngày</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="date" class="form-control" name="denNgay" ng-model="denNgay" ng-change="Loc()" />
+                            <label for="denNgay">Đến ngày</label>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-info" ng-click="LocTatCa()" style="margin-top: 20px;">Tất cả</button>
+                    </div>
+                </form>
+            </div>
+            <div  style="height: 560px;" ui-grid-exporter ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-expandable ui-grid="baocaos"></div>
+        </div>
+    </div>
+</div>

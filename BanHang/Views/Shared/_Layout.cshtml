@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewBag.Title</title>
+
+    <!-- BEGIN META -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="">
+    <meta name="description" content="Short explanation about this website">
+
+    <!-- BEGIN STYLESHEETS -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,300,400,600,700,800' rel='stylesheet' type='text/css' />
+    <link href="~/Content/css/theme-default/bootstrap.min.css" rel="stylesheet" media="all" />
+    <link href="~/Content/css/theme-default/materialadmin.min.css" rel="stylesheet" />
+    <link href="~/Content/css/theme-default/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/css/theme-default/material-design-iconic-font.min.css" rel="stylesheet" />
+
+
+    <!--SweetAlert-->
+    <link href="~/Scripts/sweetalert/sweetalert.css" rel="stylesheet" />
+
+    <!--UI-Grid-->
+    <link href="~/bower_components/angular-ui-grid/ui-grid.min.css" rel="stylesheet" />
+    <!--Message-->
+    <link href="~/Content/css/theme-default/libs/toastr/toastr.min.css" rel="stylesheet" />
+
+    <!--Table-->
+    @*<link href="~/Content/css/theme-default/libs/DataTables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/css/theme-default/libs/DataTables/TableTools.min.css" rel="stylesheet" />
+    <link href="~/Content/css/theme-default/libs/DataTables/extensions/dataTables.colVis.min.css" rel="stylesheet" />
+    <link href="~/Content/css/theme-default/libs/DataTables/extensions/dataTables.tableTools.min.css" rel="stylesheet" />*@
+    
+    <!--NgPrint-->
+    <link href="~/Scripts/ngPrint-master/ngPrint.min.css" rel="stylesheet" />
+
+    <!--Site-->
+    <link href="~/Content/css/Site.css" rel="stylesheet" />
+
+    <link href="~/Content/css/gistfile1.css" rel="stylesheet" />
+
+    <style>
+        /*.form-control {
+            height: 22px;
+            font-size: 13px;
+        }*/
+    </style>
+    <style type="text/css" media="print">
+        
+
+        /*.table {
+            display: table;
+            border-spacing: 2px;
+        }
+        .row {
+            display: table-row;
+        }
+        .row > div {
+            display: table-cell;
+            border-right: solid 1px #000;
+        }*/
+    </style>
+
+    <!-- Additional CSS includes -->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="~/Content/js/libs/utils/html5shiv.js"></script>
+    <script type="text/javascript" src="~/Content/js/libs/utils/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="menubar-hoverable menubar-first" ng-app="myApp">
+    <!-- HEADER-->
+    <header id="header" style="display: none; ">
+        <div class="headerbar">
+            <input type="hidden" value="@WebSecurity.CurrentUserId" id="user" />
+            <input type="hidden" value="@Roles.GetRolesForUser(WebSecurity.CurrentUserName)[0]" id="role" />
+            <div class="headerbar-left">
+                <ul class="header-nav header-nav-options">
+                    <li class="header-nav-brand">
+                        <div class="brand-holder">
+                            <a href="/">
+                                <span class="text-lg text-bold text-primary">KNT</span>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="btn btn-icon-toggle menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="headerbar-right">
+                @*<ul class="header-nav header-nav-options">
+                    
+                    <li>
+                        <form class="navbar-search" role="search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="headerSearch" placeholder="Enter your keyword">
+                            </div>
+                            <button type="submit" class="btn btn-icon-toggle ink-reaction"><i class="fa fa-search"></i></button>
+                        </form>
+                    </li>
+                </ul>*@
+                <!--Profile-->
+                @*<ul class="header-nav header-nav-profile">
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown">
+                            <img src="~/Content/img/Anonymous.png" />
+                            <span class="profile-info">
+                                <!--<b>@WebSecurity.CurrentUserName</b><br />
+                                <span></span>-->
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu animation-dock">
+                            <!--
+                            <li><a href=""><i class="fa fa-fw fa-power-off text-danger"></i> Logout</a></li>-->
+                        </ul><!--end .dropdown-menu -->
+                    </li><!--end .dropdown -->
+                </ul>*@
+            </div>
+        </div>
+    </header>
+
+    <!-- BASE-->
+    <div id="base" class="menubar-hoverable">
+        <!-- OFFCANVAS LEFT -->
+        <div class="offcanvas">
+        </div>
+
+        <!-- CONTENT-->
+        <div id="content" style="padding-top: 0; margin-top: 0; top: -20px;">
+            <!-- SECTION -->
+            <section>
+                <!--Header Section-->
+                <!--<div class="section-header">
+                    <ol class="breadcrumb">
+                        <li class="active text-uppercase">@ViewBag.Title</li>
+                    </ol>
+                </div>-->
+                <!--Body-->
+                <div class="section-body">
+                    @RenderBody()
+                </div>
+            </section>
+        </div>
+
+        <!-- MENUBAR-->
+        <div id="menubar" class="menubar-inverse animate">
+            <div class="menubar-fixed-panel">
+                <div>
+                    <a class="btn btn-icon-toggle btn-default menubar-toggle" data-toggle="menubar" href="javascript:void(0);">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+                <div class="expanded">
+                    <a href="/#/banhang">
+                        <span class="text-lg text-bold text-primary ">@WebSecurity.CurrentUserName</span>
+                    </a>
+                </div>
+            </div>
+            <div class="menubar-scroll-panel">
+
+                <!-- BEGIN MAIN MENU -->
+                <ul id="main-menu" class="gui-controls">
+                    <li>
+                        <a href="/#/banhang">
+                            <div class="gui-icon"><i class="glyphicon glyphicon-shopping-cart"></i></div>
+                            <span class="title">Bán hàng</span>
+                        </a>
+                    </li>
+                    @if (Roles.GetRolesForUser(WebSecurity.CurrentUserName)[0] == "Admin")
+                    {
+                        <li>
+                            <a href="/#/hanghoa">
+                                <div class="gui-icon"><i class="glyphicon glyphicon-barcode"></i></div>
+                                <span class="title">Hàng hóa</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/#/nhaphang">
+                                <div class="gui-icon"><i class="fa fa-share-square-o"></i></div>
+                                <span class="title">Nhập hàng</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/#/baocaobanhang">
+                                <div class="gui-icon"><i class="fa fa-area-chart"></i></div>
+                                <span class="title">Báo cáo bán hàng</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Index", "Account")">
+                                <div class="gui-icon"><i class="fa fa-user"></i></div>
+                                <span class="title">Tài khoản</span>
+                            </a>
+                        </li>
+                    }
+                    <li>
+                        <a href="@Url.Action("Logout", "Account")">
+                            <div class="gui-icon"><i class="fa fa-sign-out"></i></div>
+                            <span class="title">Đăng xuất</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+
+                <div class="menubar-foot-panel">
+                    <small class="no-linebreak hidden-folded">
+                        <span class="opacity-75">Copyright &copy; 2016</span> <strong>Kết nối trẻ</strong>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- BEGIN JAVASCRIPT -->
+    <!--@RenderSection("scripts", required: false)-->
+
+    <script src="~/Content/js/libs/jquery/jquery-1.11.2.min.js"></script>
+    <script src="~/Content/js/libs/jquery/jquery-migrate-1.2.1.min.js"></script>
+    <script src="~/Content/js/libs/bootstrap/bootstrap.min.js"></script>
+    <script src="~/Content/js/libs/spin.js/spin.min.js"></script>
+    <script src="~/Content/js/libs/autosize/jquery.autosize.min.js"></script>
+    <script src="~/Content/js/libs/nestable/jquery.nestable.js"></script>
+    <script src="~/Content/js/libs/nanoscroller/jquery.nanoscroller.min.js"></script>
+
+
+
+    <!--AngularJS-->
+    <script src="~/Scripts/sweetalert/sweetalert.min.js"></script>
+    <!--
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>-->
+    <script src="~/Scripts/angular.min.js"></script>
+    <script src="~/Scripts/angular-sanitize.min.js"></script>
+    <script src="~/Scripts/angular-route.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.css" />
+
+
+    <!--Export-->
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+    <script src="http://ui-grid.info/release/ui-grid.js"></script>
+    <link rel="stylesheet" href="http://ui-grid.info/release/ui-grid.css" type="text/css">
+
+    <!--Loading Spinner-->
+    <script src="~/Scripts/loading-spinner/spin.min.js"></script>
+    <script src="~/Scripts/loading-spinner/angular-spinner.min.js"></script>
+    <script src="~/Scripts/loading-spinner/angular-loading-spinner.js"></script>
+
+    <!--IO-Barcode-->
+    <script src="~/Scripts/io-barcode/angular-io-barcode.min.js"></script>
+    
+    <!--NgPrint-->
+    <script src="~/Scripts/ngPrint-master/ngPrint.min.js"></script>
+
+    <!--
+    <script src="~/Scripts/angular-locale_vi-vn.js"></script>-->
+    <!--ng Sweet Alert-->
+    <script src="~/Scripts/sweetalert/ngSweetAlert.min.js"></script>
+    <!--Pagination-->
+    <script src="~/Scripts/pagination/dirPagination.min.js"></script>
+
+
+    <!--CKFinder-->
+    <script type="text/javascript" src='@Url.Content("~/ckfinder/ckfinder.js")'></script>
+
+    <!--UI-Grid-->
+    <script src="~/bower_components/angular-ui-grid/ui-grid.min.js"></script>
+    <!--UI Bootstrap-->
+    <script src="~/Scripts/ui-bootstrap-tpls-1.3.3.min.js"></script>
+
+    
+
+    <!--Message-->
+    <script src="~/Content/js/libs/toastr/toastr.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            toastr.options = {
+                "positionClass": "toast-bottom-left"
+            };
+        });
+    </script>
+
+
+
+    <!--Table-->
+    @*<script src="~/Content/js/libs/DataTables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/js/libs/DataTables/extensions/ColVis/js/dataTables.colVis.min.js"></script>
+    <script src="~/Content/js/libs/DataTables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
+    <script src="~/Content/js/core/demo/DemoTableDynamic.min.js"></script>*@
+
+
+    <script src="~/Content/js/core/source/App.js"></script>
+    <script src="~/Content/js/core/source/AppNavigation.js"></script>
+    <script src="~/Content/js/core/source/AppOffcanvas.js"></script>
+    <script src="~/Content/js/core/source/AppCard.js"></script>
+    <script src="~/Content/js/core/source/AppForm.js"></script>
+    <script src="~/Content/js/core/source/AppNavSearch.js"></script>
+    <script src="~/Content/js/core/source/AppVendor.js"></script>
+    <script src="~/Content/js/core/demo/Demo.js"></script>
+
+    <script src="~/Content/js/core/demo/DemoLayouts.js"></script>
+    <script src="~/Content/js/core/demo/DemoFormEditors.js"></script>
+    <script src="~/Content/js/core/demo/DemoFormComponents.js"></script>
+
+
+    <script src="~/Scripts/myScript/myApp.js"></script>
+
+    <script src="~/Scripts/myScript/Routing.js"></script>
+
+    <script src="~/Scripts/myScript/hanghoaController.js"></script>
+    <script src="~/Scripts/myScript/nhaphangController.js"></script>
+    <script src="~/Scripts/myScript/banhangController.js"></script>
+    <script src="~/Scripts/myScript/baocaoBanHangController.js"></script>
+
+</body>
+
+</html>

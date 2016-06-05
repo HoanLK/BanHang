@@ -1,0 +1,148 @@
+﻿
+<div ng-controller="banhangController">
+    <!--List Hóa đơn bán hàng-->
+    <div class="row" style="margin: 0; padding: 0;">
+        <div class="card" style="margin: 0; padding: 0; margin-bottom: 5px;">
+            <div class="card-body no-padding" style="margin: 10px;">
+                <a class="btn btn-raised btn-warning" title="Thêm hóa đơn bán hàng" ng-click="ThemHoaDonBanHang()"><span class="fa fa-plus"></span></a>
+                <a class="btn btn-raised ink-reaction btn-default" style="margin-left: 10px;"
+                   ng-click="ChonHoaDonBanHang(value.id)"
+                   ng-repeat="(index, value) in hoadonBanHangs"
+                   ng-class="{'btn-default-bright': value.id == hoadonBanHang.id}">
+                    Hóa đơn {{index+1}}
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5" style="margin: 0; padding: 0;">
+        <!--<ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase"><b>Mặt hàng</b></div>
+                </div>
+            </li>
+        </ul>-->
+        <div class="card">
+            <div class="card-body" style="padding: 5px; margin: 0;">
+                <form class="form" role="form">
+                    <!--<div class="form-group ">
+                        <div class="input-group-content">
+                            <select id="nhomHang" name="nhomHang" class="form-control"
+                                    ng-model="nhomHang"
+                                    ng-options="option as option.ten for option in nhomHangs"
+                                    ng-change="ChonNhomHang()"
+                                    ng-disabled="hoadonBanHang.id == null"></select>
+                            <label for="nhomHang">Nhóm hàng</label>
+                        </div>
+                        <div class="input-group-btn">
+                            <a class="btn btn-sm btn-warning" title="Tất cả" ng-click="ChonTatCaNhomHang()" ng-disabled="hoadonBanHang.id == null">Tất cả</a>
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="mavach" ng-model="mavach" ng-keypress="($event.which === 13)?QuetMaVach():0" ng-disabled="hoadonBanHang.id == null" />
+                        <label for="mavach">Mã sản phẩm</label>
+                    </div>
+                </form>
+            </div>
+            <div ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid="hanghoas" style="height: 500px"></div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <!--<ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase"><b>Nhập hàng vào kho</b></div>
+                </div>
+            </li>
+        </ul>-->
+        <form role="form" class="form">
+
+            <div class="card" style="padding: 5px;">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="thoigian" name="thoigian" ng-disabled="hoadonBanHang.id == null" ng-model="hoadonBanHang.thoigian | date:'dd-MM-yyyy HH:mm:ss'" />
+                        <label for="thoigian">Thời gian</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select id="khachhang" name="khachhang" class="form-control"
+                                ng-model="hoadonBanHang.idKhachHang"
+                                ng-change="LuuHoaDonBanHang()"
+                                ng-options="option.id as option.ten for option in khachhangs"
+                                ng-disabled="hoadonBanHang.id == null"></select>
+                        <label for="khachhang">Khách hàng</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select id="idLoaiHoaDonBanHang" name="idLoaiHoaDonBanHang" class="form-control"
+                                ng-model="hoadonBanHang.idLoaiHoaDonBanHang"
+                                ng-change="LuuHoaDonBanHang()"
+                                ng-options="option.id as option.ten for option in loaiHoaDonBanHangs"
+                                ng-disabled="hoadonBanHang.id == null"></select>
+                        <label for="idLoaiHoaDonBanHang">Loại hóa đơn</label>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-bottom: 20px;"><div ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-edit ui-grid="chitietBanHangs"></div></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="tongTien" name="tongTien" ng-model="hoadonBanHang.tongTien | number:0" ng-disabled="hoadonBanHang.id == null" readonly />
+                        <label for="tongTien">Tổng tiền (vnđ)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="giamgia" name="giamgia" ng-model="hoadonBanHang.giamgia" ng-disabled="hoadonBanHang.id == null" ng-change="LuuHoaDonBanHang()" />
+                        <label for="giamgia">Giảm giá (vnđ)</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="thanhtoan" name="thanhtoan" ng-model="hoadonBanHang.thanhtoan | number:0" ng-disabled="hoadonBanHang.id == null" readonly />
+                        <label for="thanhtoan">Thanh toán (vnđ)</label>
+                    </div>
+                    <div class="pull-right">
+                        <button class="btn btn-info" ng-print print-element-id="printThisElement" ng-disabled="hoadonBanHang.id == null"><span class="fa fa-print"></span> In</button>
+                        <button class="btn btn-success" ng-click="ThanhToan()" ng-print print-element-id="printThisElement" ng-disabled="hoadonBanHang.id == null"><span class="fa fa-save"></span> Thanh toán</button>
+                        <button class="btn btn-danger" ng-click="HuyHoaDonBanHang()" ng-disabled="hoadonBanHang.id == null"><span class="fa fa-remove"></span> HỦY</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <div id="printThisElement" style="font-size: 10px; ">
+            <div class="visible-print-block" style="margin-right: 10px">
+                <div class="col-sm-12 text-center"><b class="text-uppercase">Nhà hàng ABC</b></div>
+                <div class="col-sm-12">75, Lâm Tường, Lê Chân, HP</div>
+                <div class="col-sm-12">0988-xxx-xxx - 0988-xxx-xxx</div>
+                <div class="col-sm-12">Email: abcxyz@gmail.com</div>
+                <div class="col-sm-12">Facebook: abcxyz</div><br />
+                <div class="col-sm-12 text-center"><b class="text-uppercase">Hóa đơn thanh toán</b></div>
+                <div class="col-sm-12">No: {{hoadonBanHang.id}}</div>
+                <div class="col-sm-12">Time: {{hoadonBanHang.thoigian | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                <div class="col-sm-12">Người bán: {{hoadonBanHang.User.Name}}</div>
+                <div class="col-sm-6">{{hoadonBanHang.KhachHang.ten}}</div><br />
+                <div class="col-sm-6">{{hoadonBanHang.LoaiHoaDonBanHang.ten}}</div>
+                <section>
+                    <div class="col-sm-12 text-center" style="margin: 0; padding: 0; border-bottom: 1px solid #000">
+                        <div class="col-sm-4"><b>ĐG</b></div>
+                        <div class="col-sm-2"><b>SL</b></div>
+                        <div class="col-sm-6"><b>T.Tiền</b></div>
+                    </div>
+                    <div class="col-sm-12" style="margin: 0; border-bottom: 1px dotted #000; padding: 10px 0;" ng-repeat="(index, value) in chitietBanHangs.data" style="padding-top: 1px !important">
+                        <div class="col-sm-12" style="margin: 0; padding: 0">{{value.HangHoa.ten}}</div>
+                        <div class="col-sm-4">{{value.dongia}}</div>
+                        <div class="col-sm-2" style="border-left: 1px solid #000; border-right: 1px solid #000">{{value.soluong}}</div>
+                        <div class="col-sm-6">{{value.thanhtien}}</div>
+                    </div>
+                </section>
+                <div class="col-sm-6 text-right" style="margin-top: 10px;">T.Hàng:</div><div class="col-sm-6 text-right" style="margin-top: 10px;">{{hoadonBanHang.tongTien | number:0}} <sup>đ</sup></div>
+                <div class="col-sm-6 text-right">Giảm giá:</div><div class="col-sm-6 text-right">{{hoadonBanHang.giamgia | number:0}} <sup>đ</sup></div>
+                <div class="col-sm-6 text-right">Tổng:</div><div class="col-sm-6 text-right" ><b>{{hoadonBanHang.thanhtoan | number:0}} <sup>đ</sup></b></div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

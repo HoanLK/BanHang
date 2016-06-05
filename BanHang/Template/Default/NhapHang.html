@@ -1,0 +1,180 @@
+﻿
+<div ng-controller="nhaphangController">
+    <!--Hàng hóa-->
+    <!--<div class="col-md-12">
+        <ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase"><b>Nhập hàng</b></div>
+                    <div pull-right><a class="btn btn-warning" data-toggle="modal" data-target="#themNhapHang" data-backdrop="static" data-keyboard="false" title="Thêm phiếu nhập hàng" ng-click="ThemNhapHang()"><span class="fa fa-plus"></span></a></div>
+                </div>
+            </li>
+        </ul>
+        <div class="card">
+            <div style="height: 570px;" ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid="nhaphangs"></div>
+        </div>
+    </div>-->
+
+    <!--Thêm nhập hàng-->
+    <div class="col-md-3" style="margin: 0; padding: 0;">
+        <!--<ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase">
+                        <b>Hàng hóa</b>
+                    </div>
+                </div>
+            </li>
+        </ul>-->
+        <div class="card">
+            <div class="card-body">
+                <form class="form" role="form">
+                    <div class="form-group ">
+                        <div class="input-group-content">
+                            <select id="nhomHang" name="nhomHang" class="form-control"
+                                    ng-model="nhomHang"
+                                    ng-options="option as option.ten for option in nhomHangs"
+                                    ng-change="ChonNhomHang()"
+                                    ng-disabled="nhaphang.id == null"></select>
+                            <label for="nhomHang">Nhóm hàng</label>
+                        </div>
+                        <div class="input-group-btn">
+                            <a class="btn btn-sm btn-warning" title="Tất cả" ng-click="ChonTatCaNhomHang()" ng-disabled="nhaphang.id == null">Tất cả</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng- ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid="hanghoas" style="height: 550px" ></div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase">
+                        <b>Nhập hàng</b>
+                        <button class="btn btn-warning" title="Thêm nhập hàng" ng-click="ThemNhapHang()"><span class="fa fa-plus"></span></button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <form role="form" class="form">
+
+            <div class="card">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="thoigian" name="thoigian" ng-model="nhaphang.thoigian | date:'dd-MM-yyyy HH:mm:ss'" ng-disabled="nhaphang.id == null" />
+                        <label for="thoigian">Thời gian</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select id="nhaCungCap" name="nhaCungCap" class="form-control"
+                                ng-model="nhaphang.idNhaCungCap"
+                                ng-options="option.id as option.ten for option in nhaCungCaps"
+                                ng-disabled="nhaphang.id == null"></select>
+                        <label for="nhaCungCap">Nhà cung cấp</label>
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-bottom: 20px;"><div ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid-edit ui-grid="chitietNhapHangs" ng-disabled="nhaphang.id == null"></div></div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="tongTien" name="tongTien" ng-model="nhaphang.tongTien | number:0" readonly />
+                        <label for="tongTien">Tổng tiền (vnđ)</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" class="form-control" id="giamGia" name="giamGia" ng-model="nhaphang.giamGia" ng-change="TinhTien()" ng-disabled="nhaphang.id == null" />
+                        <label for="giamGia">Giảm giá (vnđ)</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="thanhtoan" name="thanhtoan" ng-model="nhaphang.thanhtoan | number:0" readonly />
+                        <label for="thanhtoan">Thanh toán (vnđ)</label>
+                    </div>
+                    <div class="pull-right">
+                        <a class="btn btn-success" ng-click="LuuNhapHang()" ng-disabled="nhaphang.id == null"><span class="fa fa-save"></span> Hoàn thành</a>
+                        <a class="btn btn-danger"  ng-click="HuyNhapHang()" ng-disabled="nhaphang.id == null"><span class="fa fa-remove"></span> HỦY</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Xem nhập hàng-->
+    <!--<div class="modal fade" id="xemNhapHang" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 90%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase" id="myModalLabel">Hóa đơn nhập hàng</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td width="200px">Mã hóa đơn</td>
+                                <td>{{nhaphang.id}}</td>
+                            </tr>
+                            <tr>
+                                <td>Thời gian</td>
+                                <td>{{nhaphang.thoigian | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nhà cung cấp</td>
+                                <td>{{nhaphang.nhaCungCap}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <table>
+                            <tr>
+                                <td width="200px">Tổng tiền</td>
+                                <td>{{nhaphang.tongTien | number:0}}</td>
+                            </tr>
+                            <tr>
+                                <td>Giảm giá</td>
+                                <td>{{nhaphang.giamGia | number:0}}</td>
+                            </tr>
+                            <tr>
+                                <td>Thanh toán</td>
+                                <td>{{nhaphang.thanhtoan | number:0}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="col-md-12">
+                        <hr />
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Mã hàng hóa</th>
+                                    <th>Tên hàng hóa</th>
+                                    <th>Đơn vị tính</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Giảm giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(index, value) in chitietNhapHangs.data">
+                                    <td>{{value.idHangHoa}}</td>
+                                    <td>{{value.tenHangHoa}}</td>
+                                    <td>{{value.donvitinh}}</td>
+                                    <td>{{value.dongia | number:0}}</td>
+                                    <td>{{value.soluong | number:0}}</td>
+                                    <td>{{value.giamgia | number:0}}</td>
+                                    <td>{{value.thanhtien | number:0}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+</div>

@@ -1,0 +1,322 @@
+﻿
+<div ng-controller="hanghoaController">
+
+    <!--Nhóm hàng-->
+    <div class="col-md-3" style="margin: 0; padding: 0;">
+        <div class="card">
+            <div class="card-body no-padding">
+                <ul class="list list divider-full-bleed">
+                    <li class="tile bg-primary">
+                        <div class="tile-content ink-reaction">
+                            <div class="tile-text text-uppercase">
+                                <b>Nhóm hàng</b><br />
+                                <input class="text-warning" ng-model="search.ten" />
+                            </div>
+                            <div pull-right><a class="btn btn-warning" data-toggle="modal" data-target="#themNhomHang" data-backdrop="static" data-keyboard="false" title="Thêm nhóm hàng" ng-click="ThemNhomHang()"><span class="fa fa-plus"></span></a></div>
+                        </div>
+                    </li>
+                    <li class="tile">
+                        <a class="tile-content ink-reaction">
+                            <div class="tile-text btn active" ng-click="XemHangHoaTheoNhom()" ng-class="{'text-primary': nhomHang.id == null}">Tất cả </div>
+                        </a>
+                    </li>
+                    <li class="tile" dir-paginate="(index, value) in nhomHangs | itemsPerPage: 8 | filter:search:strict">
+                        <a class="tile-content ink-reaction">
+                            <div class="tile-text" ng-class="{'text-primary': nhomHang.id == value.id, 'text-default': nhomHang.id != value.id}" style="cursor: pointer" ng-click="XemHangHoaTheoNhom(value)">{{value.ten}} ({{value.HangHoa.length}})</div>
+                            <div pull-right><span class="btn btn-sm" ng-click="SuaNhomHang(value.id)" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#themNhomHang" title="Sửa nhóm hàng"><span class="fa fa-edit text-info"></span></span></div>
+                            <div pull-right><span class="btn btn-sm" ng-click="XoaNhomHang(value.id, index)" title="Xóa nhóm hàng"><span class="fa fa-bitbucket text-danger"></span></span></div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-foot"><dir-pagination-controls></dir-pagination-controls></div>
+        </div>
+    </div>
+
+    <!--Hàng hóa-->
+    <div class="col-md-9">
+        <span us-spinner="{radius:15, width:4, length: 8}"></span>
+        <ul class="list">
+            <li class="tile bg-primary">
+                <div class="tile-content ink-reaction">
+                    <div class="tile-text text-uppercase"><b>Hàng hóa</b></div>
+                    <div pull-right><a class="btn btn-warning" data-toggle="modal" data-target="#themHangHoa" data-backdrop="static" data-keyboard="false" title="Thêm hàng hóa" ng-click="ThemHangHoa()"><span class="fa fa-plus"></span></a></div>
+                </div>
+            </li>
+        </ul>
+        <div class="card">
+            <div style="height: 590px;" ui-grid-selection ui-grid-pagination ui-grid-resize-columns ui-grid-move-columns ui-grid="hanghoas"></div>
+        </div>
+    </div>
+
+
+    <!--Xem hàng hóa-->
+    <div class="modal fade" id="xemHangHoa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 60%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-info" id="myModalLabel"><b style="font-size: 1.3em">{{hanghoa.ten}}</b></p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+                    <div class="col-md-5"><img class="img-responsive" src="{{hanghoa.hinhanh}}" /></div>
+                    <div class="col-md-7">
+                        <table class="table table-striped">
+                            <tr>
+                                <th width="200px">Mã hàng</th>
+                                <td>{{hanghoa.mavach}}</td>
+                            </tr>
+                            <tr>
+                                <th>Nhóm hàng</th>
+                                <td>{{hanghoa.NhomHang.ten}}</td>
+                            </tr>
+                            <tr>
+                                <th>ĐVT</th>
+                                <td>{{hanghoa.DonViTinh.ten}}</td>
+                            </tr>
+                            <tr>
+                                <th>NSX</th>
+                                <td>{{hanghoa.NhaSanXuat.ten}}</td>
+                            </tr>
+                            <tr>
+                                <th>Định mức tồn</th>
+                                <td>{{hanghoa.tonItNhat}}  >  {{hanghoa.tonNhieuNhat}}</td>
+                            </tr>
+                            <tr>
+                                <th>Giá sỉ</th>
+                                <td>{{hanghoa.giaSi | number:0}}</td>
+                            </tr>
+                            <tr>
+                                <th>Giá lẻ</th>
+                                <td>{{hanghoa.giaLe | number:0}}</td>
+                            </tr>
+                            <tr>
+                                <th>Giá vốn</th>
+                                <td>{{hanghoa.giaVon | number:0}}</td>
+                            </tr>
+                            <tr>
+                                <th>Tồn</th>
+                                <th>{{hanghoa.soluong | number:0}}</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-danger pull-right" title="Xóa hàng hóa" ng-click="XoaHangHoa(hanghoa)"><span class="fa fa-bitbucket"></span> Xóa</button>
+                    <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#inMaVach" title="In mã vạch"><span class="fa fa-barcode"></span> In mã vạch</button>
+                    <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#themHangHoa" title="Sửa hàng hóa" ng-click="SuaHangHoa()"><span class="fa fa-edit"></span> Sửa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Thêm hàng hóa-->
+    <div class="modal fade" id="themHangHoa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 80%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="HuyThemSuaHangHoa()"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase" id="myModalLabel" ng-show="hanghoa.id == null">Thêm hàng hóa</p>
+                    <p class="modal-title text-uppercase" id="myModalLabel" ng-show="hanghoa.id != null">Sửa hàng hóa</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+                    <form role="form" class="form form-validate">
+                        <div class="col-md-5">
+                            <div class="form-group" ng-class="{'has-error': error.hanghoa.ten == 1}">
+                                <input type="text" class="form-control" id="ten" name="ten" ng-model="hanghoa.ten" ng-change="CheckTenHangHoa(hanghoa.ten)" />
+                                <span class="help-block" ng-show="error.hanghoa.ten == 1">Nhập tên hàng hóa</span>
+                                <label for="ten">Tên hàng</label>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group-content">
+                                    <select id="idNhomHang" name="idNhomHang" class="form-control"
+                                            ng-model="hanghoa.idNhomHang"
+                                            ng-options="option.id as option.ten for option in nhomHangs"></select>
+                                    <label for="idNhomHang">Nhóm hàng</label>
+                                </div>
+                                <div class="input-group-btn">
+                                    <a class="btn btn-sm btn-warning" data-toggle="modal" data-target="#themNhomHang" data-backdrop="static" data-keyboard="false" title="Thêm nhóm hàng" ng-click="ThemNhomHang()"><span class="fa fa-plus"></span></a>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group-content">
+                                    <select id="donvitinh" name="donvitinh" class="form-control"
+                                            ng-model="hanghoa.idDonViTinh"
+                                            ng-options="option.id as option.ten for option in donvitinhs"></select>
+                                    <label for="donvitinh">Đơn vị tính</label>
+                                </div>
+                                <div class="input-group-btn">
+                                    <a class="btn btn-sm btn-warning" data-toggle="modal" data-target="#themDonViTinh" data-backdrop="static" data-keyboard="false" title="Thêm đon vị tính" ng-click="ThemDonViTinh()"><span class="fa fa-plus"></span></a>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <div class="input-group-content">
+                                    <select id="nhasanxuat" name="nhasanxuat" class="form-control"
+                                            ng-model="hanghoa.idNhaSanXuat"
+                                            ng-options="option.id as option.ten for option in nhasanxuats"></select>
+                                    <label for="nhasanxuat">Nhà sản xuất</label>
+                                </div>
+                                <div class="input-group-btn">
+                                    <a class="btn btn-sm btn-warning" data-toggle="modal" data-target="#themNhaSanXuat" data-backdrop="static" data-keyboard="false" title="Thêm nhà sản xuất" ng-click="ThemNhaSanXuat()"><span class="fa fa-plus"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="giaSi" name="giaSi" ng-model="hanghoa.giaSi" />
+                                <label for="giaSi">Giá sỉ</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="giaLe" name="giaLe" ng-model="hanghoa.giaLe" />
+                                <label for="giaLe">Giá lẻ</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="giaVon" name="giaVon" ng-model="hanghoa.giaVon" />
+                                <label for="giaVon">Giá vốn</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="tonItNhat" name="tonItNhat" ng-model="hanghoa.tonItNhat" ng-init="hanghoa.tonItNhat = 0" />
+                                <label for="tonItNhat">Tồn ít nhất</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="tonNhieuNhat" name="tonNhieuNhat" ng-model="hanghoa.tonNhieuNhat" ng-init="hanghoa.tonNhieuNhat = 999999" />
+                                <label for="tonNhieuNhat">Tồn nhiều nhất</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group" style="text-align: center">
+                                <img class="img-responsive" src="{{hanghoa.hinhanh}}" ng-show="hanghoa.hinhanh" style="margin: 0px auto;" /><br />
+                                <input type="hidden" name="image" id="image" ng-model="hanghoa.hinhanh" class="form-control" />
+                                <button class="btn btn-primary" ng-click="ChonHinhAnhHangHoa()">Chọn ảnh</button>
+                            </div>
+                            <div class="form-group ">
+                                <textarea name="mota" id="mota" class="form-control" rows="3" placeholder="" ng-model="hanghoa.mota"></textarea>
+                                <label for="mota">Mô tả</label>
+                            </div>
+                            <!--<div class="checkbox checkbox-styled">
+                                <label>
+                                    <input type="checkbox" ng-model="hanghoa.ngungKinhDoanh">
+                                    <span>Ngừng kinh doanh</span>
+                                </label>
+                            </div>-->
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" ng-click="HuyThemSuaHangHoa()">Đóng</button>
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="modal" ng-click="LuuHangHoa()" ng-disabled="error.tenHangHoa > 0">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Thêm nhóm hàng-->
+    <div class="modal fade" id="themNhomHang" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase" ng-show="nhomHang.id == null">Thêm nhóm hàng</p>
+                    <p class="modal-title text-uppercase" ng-show="nhomHang.id != null"> Sửa nhóm hàng</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+                    <form role="form" class="form">
+                        <div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ten" name="ten" ng-model="nhomHang.ten" />
+                                <label for="ten">Tên nhóm hàng</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="modal" ng-click="LuuNhomHang(nhomHang.id)">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Thêm đơn vị tính-->
+    <div class="modal fade" id="themDonViTinh" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase">Thêm đơn vị tính</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+                    <form role="form" class="form">
+                        <div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ten" name="ten" ng-model="donvitinh.ten" />
+                                <label for="ten">Đon vị tính</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="modal" ng-click="LuuDonViTinh()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Thêm nhà sản xuất-->
+    <div class="modal fade" id="themNhaSanXuat" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase">Thêm nhà sản xuất</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden;">
+                    <form role="form" class="form">
+                        <div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="ten" name="ten" ng-model="nhasanxuat.ten" />
+                                <label for="ten">Nhà sản xuất</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-success pull-right" data-dismiss="modal" ng-click="LuuNhaSanXuat()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--In mã vạch-->
+    <div class="modal fade" id="inMaVach" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document" style="width: 35%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <p class="modal-title text-uppercase">Mã vạch</p>
+                </div>
+                <div class="modal-body" style="height: 1%; overflow: hidden; " id="mavach">
+                    <div class="text-center inmavach" print-section>
+                        <!--<div class="mavach" barcode-generator="{{hanghoa.mavach}}" style="height:40px;"></div>-->
+                        <!--<span class="chumavach">{{hanghoa.mavach}}</span>-->
+                        <io-barcode code="{{ hanghoa.mavach }}" type="CODE128B" options="mavach"></io-barcode>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Đóng</button>
+                    <!--<button type="button" class="btn btn-success pull-right" data-dismiss="modal" ng-print print-element-id="printBarcode">In</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="visible-print-block" id="printBarcode">
+        <div class="col-sm-12">
+            <io-barcode  code="{{ hanghoa.mavach }}" type="CODE128B" options="mavach"></io-barcode>
+        </div>
+    </div>
+
+</div>

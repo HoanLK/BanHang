@@ -1,0 +1,62 @@
+﻿@using BanHang.Models.Account
+@model Login
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6 ielt8"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7 ielt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/Content/Images/images/CTA-KhongXoa/favicon.png" rel="shortcut icon" type="image/x-icon" />
+    <title>Đăng nhập</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="~/Content/css/Login.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div class="container">
+        <div class="col-md-6 col-md-offset-3">
+            <section id="content">
+                @using (Html.BeginForm())
+            {
+                    @Html.AntiForgeryToken()
+
+                    <div class="row">
+                        <h1>Đăng nhập</h1>
+                        @Html.ValidationSummary()
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Username, new { @id = "username", @placeholder = "Tài khoản", @required = true })
+                        </div>
+                        <div class="col-md-12">
+                            @Html.PasswordFor(m => m.Password, new { @id = "password", @placeholder = "Mật khẩu", @required = true })
+                        </div>
+                        <div>
+                            <input type="submit" value="Đăng nhập" />
+                            @*<a href="#">Quên mật khẩu</a>*@
+                        </div>
+                    </div>
+                }
+
+
+
+                <div class="button">
+                    <a href="http://ketnoitrejsc.com/">Design by Kết Nối Trẻ</a>
+                </div><!-- button -->
+            </section><!-- content -->
+        </div>
+    </div><!-- container -->
+    <!--Jquery-->
+    <script src="https://code.jquery.com/jquery-1.12.2.min.js" integrity="sha256-lZFHibXzMHo3GGeehn1hudTAP3Sc0uKXBXAzHX1sjtk=" crossorigin="anonymous"></script>
+    <!--Bootstrap-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

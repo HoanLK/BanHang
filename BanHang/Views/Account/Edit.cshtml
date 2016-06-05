@@ -1,0 +1,65 @@
+﻿@using BanHang.Models.Account
+@model Register
+@{
+    ViewBag.Title = "Thêm tài khoản";
+}
+
+
+<div class="card">
+    @using (@Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card-body">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Username)
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("User Name", new { @class = "control-label " })
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Tên", new { @class = "control-label " })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Mật khẩu", new { @class = "control-label " })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.Label("Xác nhận mật khẩu", new { @class = "control-label " })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group ">
+                    @Html.Label("Quyền", new { @class = "control-label col-md-2" })
+                    @Html.DropDownList("role", null, "-- Quyền --", new { @class = "form-control chzn-select" })
+                </div>
+            </div>
+
+            <div class="card-foot">
+                <div class="col-md-9">
+                    <a href="@Url.Action("Index")" data-toggle="tooltip" data-placement="top" title="Quay lại danh sách" class="btn btn-primary"><i class="fa fa-hand-o-left"></i></a> |
+                    <input type="submit" value="Thêm" class="btn btn-success" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
